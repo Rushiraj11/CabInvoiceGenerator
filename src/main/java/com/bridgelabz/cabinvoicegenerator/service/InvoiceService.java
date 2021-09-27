@@ -1,5 +1,5 @@
 package com.bridgelabz.cabinvoicegenerator.service;
-
+import com.bridgelabz.cabinvoicegenerator.model.InvoiceSummary;
 import com.bridgelabz.cabinvoicegenerator.model.Ride;
 
 public class InvoiceService {
@@ -12,7 +12,7 @@ public class InvoiceService {
         double totalFare = distance * COST_PER_KM + time * COST_PER_MIN;
         return Math.max(totalFare, MIN_FARE); // if totalfare is less then minfare, then minfare is returned as totalfare
     }
-    public double calculateFare(Ride[] rides) {
+    public double calculateTotalFare(Ride[] rides) {
         double totalFare = 0.0;
         for (Ride ride : rides) {
             totalFare = calculateFare(ride.getDistance(), ride.getTime());
@@ -20,6 +20,14 @@ public class InvoiceService {
 
         return totalFare;
     }
-
+    public InvoiceSummary calculateFare(Ride[] rides) {
+        double totalFare = 0.0;
+        for (Ride ride : rides) {
+            totalFare += calculateFare(ride.getDistance(), ride.getTime());
+        }
+        System.out.println(rides.length);
+        System.out.println(totalFare);
+        return new InvoiceSummary(rides.length, totalFare);
+    }
 
 }
